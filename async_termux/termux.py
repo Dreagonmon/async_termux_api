@@ -23,14 +23,17 @@ def _find_in_path(file, path=None):
         path = os.environ['PATH']
     paths = path.split(os.pathsep)
     for p in paths:
-        for f in os.listdir(p):
-            if f != file: continue
-            f_path = os.path.join(p, file)
-            if os.path.isfile(f_path):
-                return f_path
+        try:
+            for f in os.listdir(p):
+                if f != file: continue
+                f_path = os.path.join(p, file)
+                if os.path.isfile(f_path):
+                    return f_path
+        except FileNotFoundError: pass
     return None
 TERMUX_ROOTDIR = "/data/data/com.termux/files"
 TERMUX_HOMEDIR = os.path.join(TERMUX_ROOTDIR, "home")
+TERMUX_STORAGE = os.path.join(TERMUX_ROOTDIR, "home", "storage", "shared")
 DEFAULT_TMPDIR = os.path.join(TERMUX_ROOTDIR, "usr", "tmp")
 DEFAULT_PATH = os.path.join(TERMUX_ROOTDIR, "usr", "bin")
 SYSTEM_PATH = "/system/bin"
